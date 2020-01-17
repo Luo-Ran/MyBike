@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.dao.UserDao">
+	<!-- property：主键在pojo中的属性名 -->
+	<!-- column：主键在数据库中的列名 -->
+    <resultMap type="com.xmut.pojo.User" id="user_info">
+        <id column = "user_id" property = "userId" />
+        <result column = "user_no" property = "userNo"/>
+        <result column = "user_pass" property = "userPass"/>
+        <result column = "user_name" property = "userName"/>
+    </resultMap>
+
+    <select id="getUserByID" parameterType="int" resultMap = "user_info">
+	select * from user where user_id=#{value}
+	</select>
+    <select id="findUsers" parameterType="string" resultMap = "user_info">
+	select * from user where user_no like '%${value}%'
+	</select>
+    <select id="checkUserLogin" parameterType="java.lang.String" resultMap = "user_info">
+	select * from user where user_no=#{0} and user_pass=#{1}
+	</select>
+
+    <insert id="insertUser" parameterType="com.xmut.pojo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into
+			user_info(user_no,user_pass,user_name)
+		values
+			(#{userNo},#{userPass},#{userName})
+	</insert>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<Configuration status="WARN" monitorInterval="30">
+	<!--先定义所有的appender-->
+	<Appenders>
+		<!--输出控制台的配置-->
+		<Console name="Console" target="SYSTEM_OUT">
+			<!--输出日志的格式-->
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="RollingFile" fileName="logs/origin.log"
+					 filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+			<SizeBasedTriggeringPolicy size="5 MB" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- All < Trace < Debug < Info < Warn < Error < Fatal < OFF -->
+		<Root level="Info">
+			<AppenderRef ref="Console" />
+			<appender-ref ref="RollingFile"/>
+		</Root>
+	</Loggers>
+</Configuration>
