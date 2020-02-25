@@ -16,4 +16,24 @@ public interface BikeDao {
      * @return
      */
     List<Bike> getAllBikeInfo();
+
+    /**
+     * 根据状态查询自信车
+     * @param bikeStatus
+     * @return
+     */
+    List<Bike> getBikeInfoByStatus(String bikeStatus);
+
+    /**
+     * 根据bikeID查询自信车
+     * @param bikeId
+     * @return
+     */
+    Bike getBikeInfoByBikeID(Long bikeId);
+
+    /**
+     * 根据bikeID更新自行车状态
+     * @param bike
+     */
+    void updateBikeStatus(Bike bike);
 }

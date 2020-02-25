@@ -9,37 +9,32 @@ import java.util.Date;
  */
 public class Bike implements Serializable {
     private static final long serialVersionUID = -6657980991093874493L;
+    private Long id;
     private Long bikeId;
     /**
      * 自行车品牌
      */
-    private String brand;
+    private String bikeType;
     /**
-     * 自行车型号
+     * 自行车状态
      */
-    private String bikeModel;
-    /**
-     * 自行车数量
-     */
-    private Long bikeCount;
-    /**
-     * 生产日期
-     */
-    private Date productionDate;
+    private String bikeStatus;
     /**
      * 采购日期
      */
-    private Date procurementDate;
+    private Date procurementTime;
     /**
-     * 已出租数量
+     * 出租次数
      */
-    private Long rentedCount;
+    private Long rentalNum;
 
-    private String bikeImg;
+    public Long getId() {
+        return id;
+    }
 
-    private String bikeType;
-
-    private String bikeTypeDesc;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getBikeId() {
         return bikeId;
@@ -47,51 +42,6 @@ public class Bike implements Serializable {
 
     public void setBikeId(Long bikeId) {
         this.bikeId = bikeId;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getBikeModel() {
-        return bikeModel;
-    }
-
-    public void setBikeModel(String bikeModel) {
-        this.bikeModel = bikeModel;
-    }
-
-    public Date getProductionDate() {
-        return productionDate;
-    }
-
-    public void setProductionDate(Date productionDate) {
-        this.productionDate = productionDate;
-    }
-
-    public Date getProcurementDate() {
-        return procurementDate;
-    }
-
-    public void setProcurementDate(Timestamp procurementDate) {
-        this.procurementDate = procurementDate;
-    }
-
-
-    public void setProcurementDate(Date procurementDate) {
-        this.procurementDate = procurementDate;
-    }
-
-    public String getBikeImg() {
-        return bikeImg;
-    }
-
-    public void setBikeImg(String bikeImg) {
-        this.bikeImg = bikeImg;
     }
 
     public String getBikeType() {
@@ -102,27 +52,27 @@ public class Bike implements Serializable {
         this.bikeType = bikeType;
     }
 
-    public String getBikeTypeDesc() {
-        return bikeTypeDesc;
+    public String getBikeStatus() {
+        return bikeStatus;
     }
 
-    public void setBikeTypeDesc(String bikeTypeDesc) {
-        this.bikeTypeDesc = bikeTypeDesc;
+    public void setBikeStatus(String bikeStatus) {
+        this.bikeStatus = bikeStatus;
     }
 
-    public Long getBikeCount() {
-        return bikeCount;
+    public Date getProcurementTime() {
+        return procurementTime;
     }
 
-    public void setBikeCount(Long bikeCount) {
-        this.bikeCount = bikeCount;
+    public void setProcurementTime(Date procurementTime) {
+        this.procurementTime = procurementTime;
     }
 
-    public Long getRentedCount() {
-        return rentedCount;
+    public Long getRentalNum() {
+        return rentalNum;
     }
 
-    public void setRentedCount(Long rentedCount) {
-        this.rentedCount = rentedCount;
+    public void setRentalNum(Long rentalNum) {
+        this.rentalNum = rentalNum;
     }
 }

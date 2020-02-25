@@ -3,19 +3,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmut.dao.BikeDao">
     <resultMap id="bike_info" type="com.xmut.pojo.Bike">
-        <id column="bike_id" property="bikeId"/>
-        <result column="brand" property="brand"/>
-        <result column="bike_model" property="bikeModel"/>
-        <result column="bike_count" property="bikeCount"/>
-        <result column="production_date" property="productionDate"/>
-        <result column="procurement_date" property="procurementDate"/>
-        <result column="rented_count" property="rentedCount"/>
-        <result column="bike_img" property="bikeImg"/>
+        <id column="id" property="id"/>
+        <result column="bike_id" property="bikeId"/>
         <result column="bike_type" property="bikeType"/>
+        <result column="bike_status" property="bikeStatus"/>
+        <result column="procurement_time" property="procurementTime"/>
+        <result column="rental_num" property="rentalNum"/>
     </resultMap>
 
+    <!--搜索select-->
     <!--查询所有自行车信息-->
     <select id="getAllBikeInfo" resultMap="bike_info">
         select * from bike
     </select>
+    <!--根据状态查询自信车-->
+    <select id="getBikeInfoByStatus" parameterType="java.lang.String" resultMap="bike_info">
+        select * from bike where bike_status=#{0}
+    </select>
+    <!--根据bikeID查询自信车-->
+    <select id="getBikeInfoByBikeID" parameterType="java.lang.Long" resultMap="bike_info">
+        select * from bike where bike_id=#{0}
+    </select>
+
+
+    <!--更新update-->
+    <!--根据bikeID更新自行车状态-->
+    <update id="updateBikeStatus" parameterType="com.xmut.pojo.Bike">
+        update bike set bike_status = #{bikeStatus} WHERE bike_id = #{bikeId}
+    </update>
+
+
 </mapper>

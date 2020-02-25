@@ -19,4 +19,19 @@ public class BikeServiceImpl implements BikeService{
     public List<Bike> getAllBikeInfo() {
         return bikeDao.getAllBikeInfo();
     }
+
+    @Override
+    public List<Bike> getBikeInfoByStatus(String bikeStatus) {
+        return bikeDao.getBikeInfoByStatus(bikeStatus);
+    }
+
+    @Override
+    public Bike getBikeInfoByBikeID(Long bikeId) {
+        return bikeDao.getBikeInfoByBikeID(bikeId);
+    }
+
+    @Override
+    public void updateBikeStatus(Bike bike) {
+        bikeDao.updateBikeStatus(bike);
+    }
 }
