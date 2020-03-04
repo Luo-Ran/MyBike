@@ -10,7 +10,10 @@ import java.util.Date;
 public class Bike implements Serializable {
     private static final long serialVersionUID = -6657980991093874493L;
     private Long id;
-    private Long bikeId;
+    /**
+     * 自行车编码
+     */
+    private String bikeId;
     /**
      * 自行车品牌
      */
@@ -36,11 +39,11 @@ public class Bike implements Serializable {
         this.id = id;
     }
 
-    public Long getBikeId() {
+    public String getBikeId() {
         return bikeId;
     }
 
-    public void setBikeId(Long bikeId) {
+    public void setBikeId(String bikeId) {
         this.bikeId = bikeId;
     }
 

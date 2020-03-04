@@ -2,6 +2,7 @@ package com.xmut.controller;
 
 import com.xmut.common.Constans;
 import com.xmut.common.Result;
+import com.xmut.common.ResultType;
 import com.xmut.pojo.Bike;
 import com.xmut.service.bike.BikeService;
 import com.alibaba.fastjson.JSONArray;
@@ -24,6 +25,10 @@ public class BikeController {
     @Autowired
     private BikeService bikeService;
 
+    /**
+     * 获取全部自行车信息
+     * @return
+     */
     @RequestMapping(value = "/getAllBikeInfo", method = RequestMethod.POST)
     @ResponseBody
     public Result getAllBikeInfo() {
@@ -64,6 +69,11 @@ public class BikeController {
         return result;
     }
 
+    /**
+     * 根据自行车状态获取自行车信息
+     * @param bikeStatus
+     * @return
+     */
     @RequestMapping(value = "/getBikeInfoByStatus", method = RequestMethod.POST)
     @ResponseBody
     public Result getBikeInfoByStatus(String bikeStatus) {
@@ -73,9 +83,14 @@ public class BikeController {
         return result;
     }
 
-    @RequestMapping(value = "/putIn", method = RequestMethod.POST)
+    /**
+     * 自行车状态修改
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/changeBikeStatus", method = RequestMethod.POST )
     @ResponseBody
-    public Result putIn(HttpServletRequest request){
+    public Result changeBikeStatus(HttpServletRequest request){
         String bikes = request.getParameter("bikes");
         String targetStatus = request.getParameter("targetStatus");
         List<Bike> bikeList = JSONArray.parseArray(bikes,Bike.class);
@@ -85,6 +100,30 @@ public class BikeController {
             bikeService.updateBikeStatus(b);
         }
         Result result = new Result();
+        return result;
+    }
+
+    /**
+     * 批量删除自行车
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/deleteBikes", method = RequestMethod.POST )
+    @ResponseBody
+    public Result deleteBikes(HttpServletRequest request){
+        Result result = new Result();
+        String bikes = request.getParameter("bikes");
+        List<Bike> bikeList = JSONArray.parseArray(bikes,Bike.class);
+        // 获得bikeId
+        String[] ids = new String[bikeList.size()];
+        for(int i = 0;i < bikeList.size();i++){
+            Bike b = bikeList.get(i);
+            ids[i] = b.getBikeId();
+        }
+        int num = bikeService.batchDeleteBike(ids);
+        if(bikeList.size() != num){
+            result.setMessage(ResultType.FAIL.getName());
+        }
         return result;
     }
 

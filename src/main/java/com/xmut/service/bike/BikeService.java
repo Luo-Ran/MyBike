@@ -29,4 +29,11 @@ public interface BikeService {
      * @param bike
      */
     void updateBikeStatus(Bike bike);
+
+    /**
+     * 批量删除
+     * @param bikeIds
+     * @return
+     */
+    int batchDeleteBike(String[] bikeIds);
 }

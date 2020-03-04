@@ -21,7 +21,7 @@
         select * from bike where bike_status=#{0}
     </select>
     <!--根据bikeID查询自信车-->
-    <select id="getBikeInfoByBikeID" parameterType="java.lang.Long" resultMap="bike_info">
+    <select id="getBikeInfoByBikeID" parameterType="java.lang.String" resultMap="bike_info">
         select * from bike where bike_id=#{0}
     </select>
 
@@ -31,6 +31,16 @@
     <update id="updateBikeStatus" parameterType="com.xmut.pojo.Bike">
         update bike set bike_status = #{bikeStatus} WHERE bike_id = #{bikeId}
     </update>
+
+
+    <!--批量删除-->
+    <!--根据bikeId删除数据-->
+    <delete id="batchDeleteBike" parameterType="java.lang.String">
+        DELETE FROM bike WHERE bike_id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 
 </mapper>

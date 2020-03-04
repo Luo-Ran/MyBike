@@ -34,4 +34,9 @@ public class BikeServiceImpl implements BikeService{
     public void updateBikeStatus(Bike bike) {
         bikeDao.updateBikeStatus(bike);
     }
+
+    @Override
+    public int batchDeleteBike(String[] bikeIds) {
+        return bikeDao.batchDeleteBike(bikeIds);
+    }
 }
