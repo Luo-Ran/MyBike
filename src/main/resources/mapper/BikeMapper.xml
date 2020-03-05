@@ -9,6 +9,7 @@
         <result column="bike_status" property="bikeStatus"/>
         <result column="procurement_time" property="procurementTime"/>
         <result column="rental_num" property="rentalNum"/>
+        <result column="image_url" property="imageUrl"/>
     </resultMap>
 
     <!--搜索select-->

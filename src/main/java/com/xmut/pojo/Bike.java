@@ -30,6 +30,10 @@ public class Bike implements Serializable {
      * 出租次数
      */
     private Long rentalNum;
+    /**
+     * 图片路径
+     */
+    private String imageUrl;
 
     public Long getId() {
         return id;
@@ -77,5 +81,13 @@ public class Bike implements Serializable {
 
     public void setRentalNum(Long rentalNum) {
         this.rentalNum = rentalNum;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
