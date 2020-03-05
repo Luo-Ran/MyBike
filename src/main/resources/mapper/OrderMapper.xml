@@ -13,4 +13,8 @@
         <result column="TRIP_DIST" property="tripDist"/>
         <result column="RENTAL_COST" property="rentalCost"/>
     </resultMap>
+
+    <select id="getOrderByUserID" parameterType="java.lang.Long" resultMap="order_info">
+        SELECT * FROM bike_order WHERE user_id=#{value}
+    </select>
 </mapper>

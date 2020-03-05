@@ -1,6 +1,9 @@
 package com.xmut.common;
 
 public class Constans {
+    /**
+     * 自行车状态
+     */
     public static class BIKE_STATUS{
         // 自行车状态（0.已登记、1.待借、2.租用、3.维修、4.挂失、5.报废）
         public static final String Bike_Status_0 = "0";
@@ -21,4 +24,16 @@ public class Constans {
         public static final String Bike_Status_5 = "5";
         public static final String Bike_Status_5_DESC = "报废";
     }
+
+    /**
+     * 订单状态
+     */
+    public static class ORDER_STATUS{
+        public static final String Order_Status_0 = "0";
+        public static final String Order_Status_0_DESC = "进行中";
+
+        public static final String Order_Status_1 = "1";
+        public static final String Order_Status_1_DESC = "已完成";
+    }
+
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Administrator
@@ -36,7 +37,8 @@ public class LoginController {
         user = userService.checkUserLogin(userNo, userPass);
         if (user != null) {
             result.setData(user);
-            request.getSession().setAttribute("user", user);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user.getUserId());
         } else {
             result.fail("用户名或密码错误!");
         }
