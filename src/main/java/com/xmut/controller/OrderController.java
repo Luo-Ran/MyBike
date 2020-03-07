@@ -42,6 +42,27 @@ public class OrderController {
             }else if(Constans.ORDER_STATUS.Order_Status_1.equals(o.getStatus())){
                 orderResponse.setStatusDesc(Constans.ORDER_STATUS.Order_Status_1_DESC);
             }
+            // 计算骑行时间差
+            Long seconds = (o.getEndTime().getTime() - o.getStartTime().getTime()) / 1000;
+            Long second =  seconds % 60;
+            Long minutes = (seconds - second) / 60;
+            Long mintue = minutes % 60;
+            Long hour = (minutes - mintue) / 60;
+            StringBuffer tripTimeDesc = new StringBuffer();
+            if(0 != hour){
+                tripTimeDesc.append(hour);
+                tripTimeDesc.append("小时");
+            }
+            if(0 != mintue){
+                tripTimeDesc.append(mintue);
+                tripTimeDesc.append("分钟");
+            }
+            if(0 != second){
+                tripTimeDesc.append(second);
+                tripTimeDesc.append("秒");
+            }
+            orderResponse.setTripTme(seconds);
+            orderResponse.setTripTimeDesc(tripTimeDesc.toString());
             responseList.add(orderResponse);
         }
         result.setData(responseList);

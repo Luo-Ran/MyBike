@@ -1,5 +1,7 @@
 package com.xmut.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,10 +28,13 @@ public class Order implements Serializable {
     /**
      * 开始租用时间
      */
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startTime;
     /**
      * 结束租用时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
     /**
      * 骑行距离
