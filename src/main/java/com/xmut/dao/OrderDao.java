@@ -16,4 +16,11 @@ public interface OrderDao {
      * @return
      */
     List<Order> getOrderByUserID(Long userId);
+
+    /**
+     * orderId删除数据
+     * @param orderId
+     * @return
+     */
+    int deleteOrderInfoByOrderId(String orderId);
 }

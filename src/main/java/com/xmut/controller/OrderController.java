@@ -69,6 +69,15 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping(value = "/deleteOrderInfoByOrderId", method = RequestMethod.POST)
+    @ResponseBody
+    public Result deleteOrderInfoByOrderId(HttpServletRequest request){
+        Result result = new Result();
+        String orderId = request.getParameter("orderId");
+        int num = orderService.deleteOrderInfoByOrderId(orderId);
+        return result;
+    }
+
     private void copyOrder(Order order,OrderResponse orderResponse){
         orderResponse.setId(order.getId());
         orderResponse.setOrderId(order.getOrderId());

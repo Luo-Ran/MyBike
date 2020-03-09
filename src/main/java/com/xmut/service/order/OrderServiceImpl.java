@@ -16,4 +16,9 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> getOrderByUserID(Long userId) {
         return orderDao.getOrderByUserID(userId);
     }
+
+    @Override
+    public int deleteOrderInfoByOrderId(String orderId) {
+        return orderDao.deleteOrderInfoByOrderId(orderId);
+    }
 }

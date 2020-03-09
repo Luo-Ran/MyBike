@@ -17,4 +17,8 @@
     <select id="getOrderByUserID" parameterType="java.lang.Long" resultMap="order_info">
         SELECT * FROM bike_order WHERE user_id=#{value}
     </select>
+    
+    <delete id="deleteOrderInfoByOrderId" parameterType="java.lang.String">
+        delete from bike_order where ORDER_ID = #{orderId}
+    </delete>
 </mapper>

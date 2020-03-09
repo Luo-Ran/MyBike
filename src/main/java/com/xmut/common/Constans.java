@@ -36,4 +36,15 @@ public class Constans {
         public static final String Order_Status_1_DESC = "已完成";
     }
 
+    /**
+     * 维修结果状态
+     */
+    public static class REPAIR_RESULT{
+        public static final String REPAIR_RESULT_0 = "0";
+        public static final String REPAIR_RESULT_0_DESC = "投入使用";
+
+        public static final String REPAIR_RESULT_1 = "1";
+        public static final String REPAIR_RESULT_1_DESC = "报废";
+    }
+
 }
