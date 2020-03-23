@@ -43,5 +43,15 @@
         </foreach>
     </delete>
 
+    <!--批量插入数据-->
+    <insert id="saveBikeInfo" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into bike(bike_id, bike_type, bike_status, procurement_time, rental_num, image_url)
+        values
+        <foreach collection="list" item = "it" index="index" separator=",">
+            (
+            #{it.bikeId}, #{it.bikeType}, #{it.bikeStatus}, #{it.procurementTime}, #{it.rentalNum}, #{it.imageUrl}
+            )
+        </foreach>
+    </insert>
 
 </mapper>

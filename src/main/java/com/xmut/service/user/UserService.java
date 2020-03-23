@@ -9,7 +9,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    User getUserByID(int id);
+    User getUserByID(Long id);
 
     /**
      * 用户名模糊查询
@@ -31,4 +31,17 @@ public interface UserService {
      * @param user
      */
     void insertUser(User user);
+
+    /**
+     * 查询所有账号
+     * @return
+     */
+    List<User> queryAllUser();
+    /**
+     * 账号禁用
+     * @param user
+     * @return
+     */
+    int updateAccountStatus(User user);
+
 }

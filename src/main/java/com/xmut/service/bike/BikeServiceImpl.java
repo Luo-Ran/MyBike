@@ -39,4 +39,9 @@ public class BikeServiceImpl implements BikeService{
     public int batchDeleteBike(String[] bikeIds) {
         return bikeDao.batchDeleteBike(bikeIds);
     }
+
+    @Override
+    public void saveBikeInfo(List<Bike> bikeList) {
+        bikeDao.saveBikeInfo(bikeList);
+    }
 }

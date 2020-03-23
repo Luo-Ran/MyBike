@@ -1,0 +1,19 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.dao.ExpenseDetailDao">
+    <!-- property：主键在pojo中的属性名 -->
+    <!-- column：主键在数据库中的列名 -->
+    <resultMap type="com.xmut.pojo.ExpenseDetail" id="expense_info">
+        <id column = "EXPENSE_ID" property = "expenseId" />
+        <result column = "USER_ID" property = "userId"/>
+        <result column = "EXPENSE_AMOUNT" property = "expenseAmount"/>
+        <result column = "COST_DESC" property = "costDesc"/>
+        <result column="USED_TIME" property="usedTime"/>
+    </resultMap>
+
+    <select id="getExpenseDeatailByUserId" parameterType="java.lang.Long" resultMap = "expense_info">
+      select * from expense_detail where user_id=#{value}
+	</select>
+
+</mapper>

@@ -11,6 +11,13 @@ public class User implements Serializable {
     private String userNo;
     private String userPass;
     private String userName;
+    private String userSign;
+    private String accountAuthority;
+    private String userBalance;
+    private String accountStatus;
+    private String accountStatusDesc;
+    private String userSex;
+    private String birthday;
 
 
     public Long getUserId() {
@@ -43,5 +50,61 @@ public class User implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserSign() {
+        return userSign;
+    }
+
+    public void setUserSign(String userSign) {
+        this.userSign = userSign;
+    }
+
+    public String getAccountAuthority() {
+        return accountAuthority;
+    }
+
+    public void setAccountAuthority(String accountAuthority) {
+        this.accountAuthority = accountAuthority;
+    }
+
+    public String getUserBalance() {
+        return userBalance;
+    }
+
+    public void setUserBalance(String userBalance) {
+        this.userBalance = userBalance;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public String getAccountStatusDesc() {
+        return accountStatusDesc;
+    }
+
+    public void setAccountStatusDesc(String accountStatusDesc) {
+        this.accountStatusDesc = accountStatusDesc;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

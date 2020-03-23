@@ -2,6 +2,36 @@ package com.xmut.common;
 
 public class Constans {
     /**
+     * 账号类型
+     */
+    public static class USER_TYPE{
+        public static final String ADMIN = "1";
+        public static final String ADMIN_DESC = "管理员";
+
+        public static final String USER = "2";
+        public static final String USER_DESC = "用户";
+    }
+    /**
+     * 账号状态
+     */
+    public static class ACCOUNT_STATUS{
+        public static final String USING = "1";
+        public static final String USING_DESC = "使用中";
+
+        public static final String PROHIBIT = "2";
+        public static final String PROHIBIT_DESC = "已禁用";
+    }
+
+    /**
+     * 性别
+     */
+    public static class USER_SEX{
+        public static final String MEN = "男";
+        public static final String WOMEN = "女";
+
+    }
+
+    /**
      * 自行车状态
      */
     public static class BIKE_STATUS{

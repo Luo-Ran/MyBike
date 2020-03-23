@@ -9,23 +9,38 @@
         <result column = "user_no" property = "userNo"/>
         <result column = "user_pass" property = "userPass"/>
         <result column = "user_name" property = "userName"/>
+		<result column="user_sign" property="userSign"/>
+		<result column="account_authority" property="accountAuthority"/>
+		<result column="user_balance" property="userBalance"/>
+		<result column="account_status" property="accountStatus"/>
+		<result column="user_sex" property="userSex"/>
+		<result column="birthday" property="birthday"/>
     </resultMap>
 
-    <select id="getUserByID" parameterType="int" resultMap = "user_info">
-	select * from user where user_id=#{value}
+    <select id="getUserByID" parameterType="java.lang.Long" resultMap = "user_info">
+		select * from user where user_id=#{value}
 	</select>
     <select id="findUsers" parameterType="string" resultMap = "user_info">
-	select * from user where user_no like '%${value}%'
+		select * from user where user_no like '%${value}%'
 	</select>
     <select id="checkUserLogin" parameterType="java.lang.String" resultMap = "user_info">
-	select * from user where user_no=#{0} and user_pass=#{1}
+		select * from user where user_no=#{0} and user_pass=#{1}
+	</select>
+	<!--查询全部账号-->
+	<select id="queryAllUser" resultMap="user_info">
+		select * from user
 	</select>
 
     <insert id="insertUser" parameterType="com.xmut.pojo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into
-			user_info(user_no,user_pass,user_name)
+			user(user_no,user_pass,user_name,account_authority,user_balance,user_sign,account_status,user_sex,birthday)
 		values
-			(#{userNo},#{userPass},#{userName})
+			(#{userNo},#{userPass},#{userName},#{accountAuthority},#{userBalance},#{userSign},#{accountStatus},#{userSex}，#{birthday})
 	</insert>
+
+	<!--更新账号状态-->
+	<update id="updateAccountStatus" parameterType="com.xmut.pojo.User">
+        update user set account_status = #{accountStatus} WHERE user_id = #{userId}
+    </update>
 
 </mapper>

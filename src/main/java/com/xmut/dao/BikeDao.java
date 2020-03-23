@@ -43,4 +43,10 @@ public interface BikeDao {
      * @return
      */
     int batchDeleteBike(String[] bikeIds);
+
+    /**
+     * 批量插入
+     * @param bikeList
+     */
+    void saveBikeInfo(List<Bike> bikeList);
 }

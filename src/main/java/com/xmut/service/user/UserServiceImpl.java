@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
     @Override
-    public User getUserByID(int id) {
+    public User getUserByID(Long id) {
         return userDao.getUserByID(id);
     }
 
@@ -32,5 +32,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertUser(User user) {
         userDao.insertUser(user);
+    }
+
+    @Override
+    public List<User> queryAllUser() {
+        return userDao.queryAllUser();
+    }
+
+    @Override
+    public int updateAccountStatus(User user) {
+        return userDao.updateAccountStatus(user);
     }
 }
