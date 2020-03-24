@@ -77,4 +77,16 @@ public class Constans {
         public static final String REPAIR_RESULT_1_DESC = "报废";
     }
 
+    /**
+     * 菜单
+     */
+    public static class MENU_TYPE{
+        // 主菜单
+        public static final String PARENT_MENU= "1";
+        public static final String PARENT_SUPERIOR_MENU = "/";
+
+        // 子菜单
+        public static final String SUB_MENU= "2";
+    }
+
 }

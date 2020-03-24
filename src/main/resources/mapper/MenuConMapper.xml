@@ -1,0 +1,14 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.dao.MenuConDao">
+    <resultMap id="menuCon_info" type="com.xmut.pojo.MenuCon">
+        <id column="id" property="id"/>
+        <result column="menu_code" property="menuCode"/>
+        <result column="account_authority" property="accountAuthority"/>
+    </resultMap>
+    
+    <select id="queryMenuControl" parameterType="java.lang.String" resultMap="menuCon_info">
+        select * from menu_control where account_authority = #{account_authority}
+    </select>
+</mapper>
