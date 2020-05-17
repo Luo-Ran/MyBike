@@ -34,6 +34,10 @@ public class Repair implements Serializable {
      * 维修结果（0. 投入使用 1.报废）
      */
     private String repairResult;
+    /**
+     * 维修状态（0. 待维修，1. 维修完成）
+     */
+    private String repairStatus;
 
 
     public Long getId() {
@@ -90,5 +94,13 @@ public class Repair implements Serializable {
 
     public void setRepairResult(String repairResult) {
         this.repairResult = repairResult;
+    }
+
+    public String getRepairStatus() {
+        return repairStatus;
+    }
+
+    public void setRepairStatus(String repairStatus) {
+        this.repairStatus = repairStatus;
     }
 }

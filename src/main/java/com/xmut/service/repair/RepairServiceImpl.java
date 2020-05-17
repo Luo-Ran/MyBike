@@ -13,17 +13,27 @@ public class RepairServiceImpl implements RepairService{
     private RepairDao repairDao;
 
     @Override
-    public void saveRepairInfo(List<Repair> list) {
-        repairDao.saveRepairInfo(list);
+    public void saveRepairInfo(Repair repair) {
+        repairDao.saveRepairInfo(repair);
     }
 
     @Override
-    public List<Repair> getAllRepairInfo() {
-        return repairDao.getAllRepairInfo();
+    public List<Repair> getRepairInfoByRepairStatus(Repair repair) {
+        return repairDao.getRepairInfoByRepairStatus(repair);
+    }
+
+    @Override
+    public List<Repair> getRepairInfoByBikeId(String bikeId) {
+        return repairDao.getRepairInfoByBikeId(bikeId);
     }
 
     @Override
     public int deleteRepairInfoByRepairId(String repairId) {
         return repairDao.deleteRepairInfoByRepairId(repairId);
+    }
+
+    @Override
+    public void updateRepairInfo(Repair repair) {
+        repairDao.updateRepairInfo(repair);
     }
 }

@@ -21,12 +21,12 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    public List<Bike> getBikeInfoByStatus(String bikeStatus) {
-        return bikeDao.getBikeInfoByStatus(bikeStatus);
+    public List<Bike> getBikeInfoByStatus(Bike bike) {
+        return bikeDao.getBikeInfoByStatus(bike);
     }
 
     @Override
-    public Bike getBikeInfoByBikeID(Long bikeId) {
+    public Bike getBikeInfoByBikeID(String bikeId) {
         return bikeDao.getBikeInfoByBikeID(bikeId);
     }
 
@@ -43,5 +43,10 @@ public class BikeServiceImpl implements BikeService{
     @Override
     public void saveBikeInfo(List<Bike> bikeList) {
         bikeDao.saveBikeInfo(bikeList);
+    }
+
+    @Override
+    public void updateRentalNum(Bike bike) {
+        bikeDao.updateRentalNum(bike);
     }
 }

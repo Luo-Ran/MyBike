@@ -76,6 +76,42 @@ public class Constans {
         public static final String REPAIR_RESULT_1 = "1";
         public static final String REPAIR_RESULT_1_DESC = "报废";
     }
+    /**
+     * 维修状态
+     */
+    public static class REPAIR_STUATUS{
+        public static final String REPAIR_STUATUS_0 = "0";
+        public static final String RREPAIR_STUATUS_0_DESC = "待维修";
+
+        public static final String REPAIR_STUATUS_1 = "1";
+        public static final String REPAIR_STUATUS_1_DESC = "维修完成";
+    }
+    /**
+     * 车辆故障类型
+     */
+    public static class REPAIR_PROBLEM{
+        public static final String REPAIR_PROBLEM_1 = "1";
+        public static final String REPAIR_PROBLEM_1_DESC = "轮胎爆胎";
+
+        public static final String REPAIR_PROBLEM_2 = "2";
+        public static final String REPAIR_PROBLEM_2_DESC = "刹车失灵";
+
+        public static final String REPAIR_PROBLEM_3 = "3";
+        public static final String REPAIR_PROBLEM_3_DESC = "车座松动";
+
+        public static final String REPAIR_PROBLEM_4 = "4";
+        public static final String REPAIR_PROBLEM_4_DESC = "踏板损坏";
+
+        public static final String REPAIR_PROBLEM_5 = "5";
+        public static final String REPAIR_PROBLEM_5_DESC = "车头松动";
+
+        public static final String REPAIR_PROBLEM_6 = "6";
+        public static final String REPAIR_PROBLEM_6_DESC = "链条掉落";
+
+        public static final String REPAIR_PROBLEM_7 = "7";
+        public static final String REPAIR_PROBLEM_7_DESC = "其他";
+
+    }
 
     /**
      * 菜单
@@ -87,6 +123,15 @@ public class Constans {
 
         // 子菜单
         public static final String SUB_MENU= "2";
+    }
+
+    /**
+     * 单车费用类型
+     */
+    public static class EXPENSE_TYPE{
+        public static final String EXPENSE_TYPE_1 = "充车费";
+
+        public static final String EXPENSE_TYPE_2 = "单车骑行费用";
     }
 
 }

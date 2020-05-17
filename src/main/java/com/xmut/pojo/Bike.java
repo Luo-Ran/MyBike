@@ -1,5 +1,7 @@
 package com.xmut.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -25,6 +27,7 @@ public class Bike implements Serializable {
     /**
      * 采购日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date procurementTime;
     /**
      * 出租次数
@@ -34,6 +37,14 @@ public class Bike implements Serializable {
      * 图片路径
      */
     private String imageUrl;
+    /**
+     * 站点id
+     */
+    private Long siteId;
+    /**
+     * 站点名称
+     */
+    private String siteName;
 
     public Long getId() {
         return id;
@@ -89,5 +100,21 @@ public class Bike implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Long siteId) {
+        this.siteId = siteId;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 }

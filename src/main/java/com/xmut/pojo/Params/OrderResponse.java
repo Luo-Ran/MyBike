@@ -10,7 +10,6 @@ public class OrderResponse extends Order implements Serializable {
     /**
      * 骑行时长
      */
-    private Long tripTme;
     private String tripTimeDesc;
 
     public String getStatusDesc() {
@@ -21,14 +20,6 @@ public class OrderResponse extends Order implements Serializable {
         this.statusDesc = statusDesc;
     }
 
-    public Long getTripTme() {
-        return tripTme;
-    }
-
-    public void setTripTme(Long tripTme) {
-        this.tripTme = tripTme;
-    }
-
     public String getTripTimeDesc() {
         return tripTimeDesc;
     }
@@ -36,4 +27,5 @@ public class OrderResponse extends Order implements Serializable {
     public void setTripTimeDesc(String tripTimeDesc) {
         this.tripTimeDesc = tripTimeDesc;
     }
+
 }

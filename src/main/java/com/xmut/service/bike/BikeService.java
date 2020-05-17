@@ -15,14 +15,14 @@ public interface BikeService {
      * 根据状态查询自信车
      * @return
      */
-    List<Bike> getBikeInfoByStatus(String bikeStatus);
+    List<Bike> getBikeInfoByStatus(Bike bike);
 
     /**
      * 根据bikeID查询自信车
      * @param bikeId
      * @return
      */
-    Bike getBikeInfoByBikeID(Long bikeId);
+    Bike getBikeInfoByBikeID(String bikeId);
 
     /**
      * 根据bikeID更新自行车状态
@@ -42,4 +42,10 @@ public interface BikeService {
      * @param bikeList
      */
     void saveBikeInfo(List<Bike> bikeList);
+
+    /**
+     * 根据bikeID更新租用次数
+     * @param bike
+     */
+    void updateRentalNum(Bike bike);
 }

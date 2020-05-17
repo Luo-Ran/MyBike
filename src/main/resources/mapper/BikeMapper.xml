@@ -10,6 +10,7 @@
         <result column="procurement_time" property="procurementTime"/>
         <result column="rental_num" property="rentalNum"/>
         <result column="image_url" property="imageUrl"/>
+        <result column="site_id" property="siteId"/>
     </resultMap>
 
     <!--搜索select-->
@@ -18,8 +19,8 @@
         select * from bike
     </select>
     <!--根据状态查询自信车-->
-    <select id="getBikeInfoByStatus" parameterType="java.lang.String" resultMap="bike_info">
-        select * from bike where bike_status=#{0}
+    <select id="getBikeInfoByStatus" parameterType="com.xmut.pojo.Bike" resultMap="bike_info">
+        select * from bike where bike_status=#{bikeStatus} and bike_id like concat('%',#{bikeId},'%')
     </select>
     <!--根据bikeID查询自信车-->
     <select id="getBikeInfoByBikeID" parameterType="java.lang.String" resultMap="bike_info">
@@ -31,6 +32,11 @@
     <!--根据bikeID更新自行车状态-->
     <update id="updateBikeStatus" parameterType="com.xmut.pojo.Bike">
         update bike set bike_status = #{bikeStatus} WHERE bike_id = #{bikeId}
+    </update>
+
+    <!--根据bikeID更新租用次数-->
+    <update id="updateRentalNum" parameterType="com.xmut.pojo.Bike">
+        update bike set rental_num = #{rentalNum} WHERE bike_id = #{bikeId}
     </update>
 
 
@@ -45,11 +51,11 @@
 
     <!--批量插入数据-->
     <insert id="saveBikeInfo" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into bike(bike_id, bike_type, bike_status, procurement_time, rental_num, image_url)
+        insert into bike(bike_id, bike_type, bike_status, procurement_time, rental_num, image_url, site_id)
         values
         <foreach collection="list" item = "it" index="index" separator=",">
             (
-            #{it.bikeId}, #{it.bikeType}, #{it.bikeStatus}, #{it.procurementTime}, #{it.rentalNum}, #{it.imageUrl}
+            #{it.bikeId}, #{it.bikeType}, #{it.bikeStatus}, #{it.procurementTime}, #{it.rentalNum}, #{it.imageUrl}, #{it.siteId}
             )
         </foreach>
     </insert>

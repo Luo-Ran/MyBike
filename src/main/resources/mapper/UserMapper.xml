@@ -15,6 +15,7 @@
 		<result column="account_status" property="accountStatus"/>
 		<result column="user_sex" property="userSex"/>
 		<result column="birthday" property="birthday"/>
+		<result column="head_img" property="headImg"/>
     </resultMap>
 
     <select id="getUserByID" parameterType="java.lang.Long" resultMap = "user_info">
@@ -33,14 +34,26 @@
 
     <insert id="insertUser" parameterType="com.xmut.pojo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into
-			user(user_no,user_pass,user_name,account_authority,user_balance,user_sign,account_status,user_sex,birthday)
+			user(user_no,user_pass,user_name,account_authority,user_balance,
+			user_sign,account_status,user_sex,birthday,head_img)
 		values
-			(#{userNo},#{userPass},#{userName},#{accountAuthority},#{userBalance},#{userSign},#{accountStatus},#{userSex}，#{birthday})
+			(#{userNo},#{userPass},#{userName},#{accountAuthority},#{userBalance},
+			#{userSign},#{accountStatus},#{userSex},#{birthday},#{headImg})
 	</insert>
 
 	<!--更新账号状态-->
 	<update id="updateAccountStatus" parameterType="com.xmut.pojo.User">
         update user set account_status = #{accountStatus} WHERE user_id = #{userId}
+    </update>
+	<!--更新账户资料-->
+	<update id="updateUserInfo" parameterType="com.xmut.pojo.User">
+		update user set head_img = #{headImg},user_name = #{userName},user_sex = #{userSex},
+		birthday = #{birthday},user_sign = #{userSign} where user_id = #{userId}
+	</update>
+
+	<!--更新账户余额-->
+	<update id="updateUserBalance" parameterType="com.xmut.pojo.User">
+        update user set user_balance = #{userBalance} WHERE user_id = #{userId}
     </update>
 
 </mapper>

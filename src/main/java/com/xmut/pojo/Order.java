@@ -37,6 +37,10 @@ public class Order implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
     /**
+     * 骑行时间
+     */
+    private String tripTime;
+    /**
      * 骑行距离
      */
     private String tripDist;
@@ -44,6 +48,22 @@ public class Order implements Serializable {
      * 订单费用
      */
     private String rentalCost;
+    /**
+     * 起始位置经度
+     */
+    private String longitudeStart;
+    /**
+     * 起始位置纬度
+     */
+    private String latitudeStart;
+    /**
+     * 结束位置经度
+     */
+    private String longitudeEnd;
+    /**
+     * 结束位置纬度
+     */
+    private String latitudeEnd;
 
     public Long getId() {
         return id;
@@ -115,5 +135,45 @@ public class Order implements Serializable {
 
     public void setRentalCost(String rentalCost) {
         this.rentalCost = rentalCost;
+    }
+
+    public String getLongitudeStart() {
+        return longitudeStart;
+    }
+
+    public void setLongitudeStart(String longitudeStart) {
+        this.longitudeStart = longitudeStart;
+    }
+
+    public String getLatitudeStart() {
+        return latitudeStart;
+    }
+
+    public void setLatitudeStart(String latitudeStart) {
+        this.latitudeStart = latitudeStart;
+    }
+
+    public String getLongitudeEnd() {
+        return longitudeEnd;
+    }
+
+    public void setLongitudeEnd(String longitudeEnd) {
+        this.longitudeEnd = longitudeEnd;
+    }
+
+    public String getLatitudeEnd() {
+        return latitudeEnd;
+    }
+
+    public void setLatitudeEnd(String latitudeEnd) {
+        this.latitudeEnd = latitudeEnd;
+    }
+
+    public String getTripTime() {
+        return tripTime;
+    }
+
+    public void setTripTime(String tripTime) {
+        this.tripTime = tripTime;
     }
 }

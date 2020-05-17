@@ -18,4 +18,21 @@ public interface OrderService {
      * @return
      */
     int deleteOrderInfoByOrderId(String orderId);
+
+    /**
+     * 新增订单
+     * @param order
+     */
+    void saveBikeOrderInfo(Order order);
+    /**
+     * 根据订单号查询订单
+     * @param orderId
+     * @return
+     */
+    Order queryOrderByOrderId(String orderId);
+    /**
+     * 完成订单--更新数据
+     * @param order
+     */
+    void updateBikeOrderInfo(Order order);
 }

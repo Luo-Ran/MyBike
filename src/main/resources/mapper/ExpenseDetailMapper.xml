@@ -16,4 +16,9 @@
       select * from expense_detail where user_id=#{value}
 	</select>
 
+    <insert id="saveExpenseDetail" parameterType="com.xmut.pojo.ExpenseDetail" useGeneratedKeys="true" keyProperty="EXPENSE_ID">
+        insert into expense_detail(USER_ID,EXPENSE_AMOUNT,COST_DESC,USED_TIME)
+        values (#{userId},#{expenseAmount},#{costDesc},#{usedTime})
+    </insert>
+
 </mapper>

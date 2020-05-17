@@ -43,4 +43,14 @@ public class UserServiceImpl implements UserService {
     public int updateAccountStatus(User user) {
         return userDao.updateAccountStatus(user);
     }
+
+    @Override
+    public void updateUserBalance(User user) {
+        userDao.updateUserBalance(user);
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+        userDao.updateUserInfo(user);
+    }
 }

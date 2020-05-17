@@ -10,25 +10,32 @@
         <result column="REPAIR_CONTENT" property="repairContent"/>
         <result column="REPAIR_TIME" property="repairTime"/>
         <result column="REPAIR_RESULT" property="repairResult"/>
+        <result column="REPAIR_STATUS" property="repairStatus"/>
     </resultMap>
 
-    <insert id="saveRepairInfo" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into repair(REPAIR_ID, BIKE_ID, USER_ID, REPAIR_CONTENT, REPAIR_TIME, REPAIR_RESULT)
-        values
-        <foreach collection="list" item = "it" index="index" separator=",">
-            (
-            #{it.repairId}, #{it.bikeId}, #{it.userId}, #{it.repairContent}, #{it.repairTime}, #{it.repairResult}
-            )
-        </foreach>
+    <insert id="saveRepairInfo" parameterType="com.xmut.pojo.Repair" useGeneratedKeys="true" keyProperty="id">
+        insert into repair(REPAIR_ID, BIKE_ID, USER_ID, REPAIR_CONTENT, REPAIR_TIME, REPAIR_STATUS)
+        values(
+          #{repairId}, #{bikeId}, #{userId}, #{repairContent}, #{repairTime}, #{repairStatus}
+          )
     </insert>
 
-    <select id="getAllRepairInfo" resultMap="repair_info">
-        select * from repair
+    <select id="getRepairInfoByRepairStatus" parameterType="com.xmut.pojo.Repair" resultMap="repair_info">
+        select * from repair where REPAIR_STATUS= #{repairStatus} and BIKE_ID like concat('%',#{bikeId},'%')
+    </select>
+
+    <select id="getRepairInfoByBikeId" parameterType="java.lang.String" resultMap="repair_info">
+        select * from repair where BIKE_ID= #{bikeId}
     </select>
     
     <delete id="deleteRepairInfoByRepairId" parameterType="java.lang.String">
         delete from repair where REPAIR_ID = #{repairId}
     </delete>
+
+    <update id="updateRepairInfo" parameterType="com.xmut.pojo.Repair">
+        update repair set REPAIR_TIME = #{repairTime},REPAIR_RESULT = #{repairResult},REPAIR_STATUS = #{repairStatus}
+        WHERE REPAIR_ID = #{repairId}
+    </update>
 
 
 </mapper>

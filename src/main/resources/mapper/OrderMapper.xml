@@ -10,15 +10,38 @@
         <result column="STATUS" property="status"/>
         <result column="START_TIME" property="startTime"/>
         <result column="END_TIME" property="endTime"/>
+        <result column="TRIP_TIME" property="tripTime"/>
         <result column="TRIP_DIST" property="tripDist"/>
         <result column="RENTAL_COST" property="rentalCost"/>
+        <result column="LONGITUDE_START" property="longitudeStart"/>
+        <result column="LATITUDE_START" property="latitudeStart"/>
+        <result column="LONGITUDE_END" property="longitudeEnd"/>
+        <result column="LATITUDE_END" property="latitudeEnd"/>
     </resultMap>
 
     <select id="getOrderByUserID" parameterType="java.lang.Long" resultMap="order_info">
         SELECT * FROM bike_order WHERE user_id=#{value}
     </select>
+
+    <select id="queryOrderByOrderId" parameterType="java.lang.String" resultMap="order_info">
+        select * from bike_order where ORDER_ID = #{value}
+    </select>
     
     <delete id="deleteOrderInfoByOrderId" parameterType="java.lang.String">
         delete from bike_order where ORDER_ID = #{orderId}
     </delete>
+
+    <insert id="saveBikeOrderInfo" parameterType="com.xmut.pojo.Order" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into
+			bike_order(ORDER_ID,USER_ID,BIKE_ID,STATUS,START_TIME,LONGITUDE_START,LATITUDE_START)
+		values
+			(#{orderId},#{userId},#{bikeId},#{status},#{startTime},#{longitudeStart},#{latitudeStart})
+    </insert>
+
+    <update id="updateBikeOrderInfo" parameterType="com.xmut.pojo.Order">
+        update bike_order set TRIP_TIME = #{tripTime},TRIP_DIST = #{tripDist},RENTAL_COST = #{rentalCost},
+        LONGITUDE_END = #{longitudeEnd},LATITUDE_END = #{latitudeEnd},END_TIME = #{endTime},
+        STATUS = #{status} where ID = #{id}
+    </update>
+
 </mapper>

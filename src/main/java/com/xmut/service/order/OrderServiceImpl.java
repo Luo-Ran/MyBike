@@ -21,4 +21,19 @@ public class OrderServiceImpl implements OrderService{
     public int deleteOrderInfoByOrderId(String orderId) {
         return orderDao.deleteOrderInfoByOrderId(orderId);
     }
+
+    @Override
+    public void saveBikeOrderInfo(Order order) {
+        orderDao.saveBikeOrderInfo(order);
+    }
+
+    @Override
+    public Order queryOrderByOrderId(String orderId) {
+        return orderDao.queryOrderByOrderId(orderId);
+    }
+
+    @Override
+    public void updateBikeOrderInfo(Order order) {
+        orderDao.updateBikeOrderInfo(order);
+    }
 }

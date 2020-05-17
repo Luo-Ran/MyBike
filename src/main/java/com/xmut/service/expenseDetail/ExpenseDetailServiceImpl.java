@@ -15,4 +15,9 @@ public class ExpenseDetailServiceImpl implements ExpenseDetailService {
     public List<ExpenseDetail> getExpenseDeatailByUserId(Long userId) {
         return expenseDetailDao.getExpenseDeatailByUserId(userId);
     }
+
+    @Override
+    public void saveExpenseDetail(ExpenseDetail expenseDetail) {
+        expenseDetailDao.saveExpenseDetail(expenseDetail);
+    }
 }

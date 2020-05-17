@@ -3,12 +3,17 @@ package com.xmut.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xmut.common.BikeSystemUtil;
 import com.xmut.common.Constans;
 import com.xmut.common.Result;
 import com.xmut.common.ResultType;
 import com.xmut.pojo.Bike;
+import com.xmut.pojo.Repair;
+import com.xmut.pojo.Site;
 import com.xmut.service.bike.BikeService;
 import com.alibaba.fastjson.JSONArray;
+import com.xmut.service.repair.RepairService;
+import com.xmut.service.site.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +34,10 @@ import java.util.*;
 public class BikeController {
     @Autowired
     private BikeService bikeService;
+    @Autowired
+    private SiteService siteService;
+    @Autowired
+    private RepairService repairService;
 
     /**
      * 获取全部自行车信息
@@ -76,15 +85,43 @@ public class BikeController {
 
     /**
      * 根据自行车状态获取自行车信息
-     * @param bikeStatus
+     * @param request
      * @return
      */
     @RequestMapping(value = "/getBikeInfoByStatus", method = RequestMethod.POST)
     @ResponseBody
-    public Result getBikeInfoByStatus(String bikeStatus) {
+    public Result getBikeInfoByStatus(@RequestBody JSONObject request) {
         Result result = new Result();
-        List<Bike> bikeList = bikeService.getBikeInfoByStatus(bikeStatus);
-        result.setData(bikeList);
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String bikeStatus = jsonObject.getString("bikeStatus");
+        String siteId = jsonObject.getString("siteId");
+        String searchValue = jsonObject.getString("searchValue");
+        // 车辆查询
+        Bike bike = new Bike();
+        bike.setBikeStatus(bikeStatus);
+        if(StringUtils.isEmpty(searchValue)){
+           searchValue = "B";
+        }
+        bike.setBikeId(searchValue);
+        List<Bike> bikeList = bikeService.getBikeInfoByStatus(bike);
+        // 站点查询
+        List<Site> siteList = siteService.queryAllSiteInfo();
+        List<Bike> resList = new ArrayList<>();
+        Long sid = Long.valueOf(siteId);
+        // 站点名称翻译
+        for(int i = 0; i < bikeList.size(); i++){
+            // 根据站点过滤数据（0代表全部站点）
+            if(sid == 0 || sid == bikeList.get(i).getSiteId()){
+                for(int j = 0;j < siteList.size(); j++){
+                    if(siteList.get(j).getId().equals(bikeList.get(i).getSiteId())){
+                        bikeList.get(i).setSiteName(siteList.get(j).getSiteName());
+                        resList.add(bikeList.get(i));
+                        continue;
+                    }
+                }
+            }
+        }
+        result.setData(resList);
         return result;
     }
 
@@ -100,8 +137,24 @@ public class BikeController {
         String bikes = json.getString("bikes");
         String targetStatus = json.getString("targetStatus");
         List<Bike> bikeList = JSONArray.parseArray(bikes,Bike.class);
-        // 修改自行车状态
         for(Bike b:bikeList){
+            // 如果当前车辆状态为“维修状态”，更新repair表
+            if(Constans.BIKE_STATUS.Bike_Status_3.equals(b.getBikeStatus())){
+                List<Repair> repairList = repairService.getRepairInfoByBikeId(b.getBikeId());
+                for(int i=0;i<repairList.size();i++){
+                    Repair repair = repairList.get(i);
+                    repair.setRepairTime(new Date());
+                    repair.setRepairStatus(Constans.REPAIR_STUATUS.REPAIR_STUATUS_1);
+                    // 投入使用
+                    if(Constans.BIKE_STATUS.Bike_Status_1.equals(targetStatus)){
+                        repair.setRepairResult(Constans.REPAIR_RESULT.REPAIR_RESULT_0);
+                    }else { // 报废
+                        repair.setRepairResult(Constans.REPAIR_RESULT.REPAIR_RESULT_1);
+                    }
+                    repairService.updateRepairInfo(repair);
+                }
+            }
+            // 修改自行车状态
             b.setBikeStatus(targetStatus);
             bikeService.updateBikeStatus(b);
         }
@@ -133,6 +186,12 @@ public class BikeController {
         return result;
     }
 
+    /**
+     * 添加车辆
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/saveNewBike", method = RequestMethod.POST )
     @ResponseBody
     public Result saveNewBike(@RequestBody JSONObject request) throws Exception {
@@ -143,21 +202,48 @@ public class BikeController {
         int num = Integer.valueOf(bikeNum);
         String date = json.getString("date");
         String imgFileBase = json.getString("imgFileBase");
+        Long siteId = json.getLong("siteId");
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         List<Bike> bikeList = new ArrayList<>();
         for(int i=0;i < num;i++){
             Bike bike = new Bike();
-            bike.setBikeId("B-" + System.currentTimeMillis());
+            bike.setBikeId("B-" + UUID.randomUUID().toString().substring(24).toUpperCase());
             bike.setBikeType(bikeType);
-            bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_0);
+            bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_1);
             if(!StringUtils.isEmpty(date)){
                 bike.setProcurementTime(sf.parse(date));
             }
             bike.setRentalNum(0L);
-            bike.setImageUrl(imgFileBase);
+            if(!StringUtils.isEmpty(imgFileBase)){
+                bike.setImageUrl(imgFileBase);// 使用上传的图片
+            }else{// 设置默认图片
+                String c = System.getProperty("user.dir");// 获取项目项目相对路径
+                String img ="data:image/jpeg;base64,/";
+                img = img + BikeSystemUtil.getImageBase64(c+"\\src\\main\\resources\\image\\defaultImg.jpg");
+                bike.setImageUrl(img);
+            }
+            bike.setSiteId(siteId);
             bikeList.add(bike);
         }
         bikeService.saveBikeInfo(bikeList);
+        return result;
+    }
+
+    @RequestMapping(value = "/getBikeInfoByBikeID",method = RequestMethod.POST)
+    @ResponseBody
+    public Result getBikeInfoByBikeID(@RequestBody JSONObject request) throws Exception{
+        Result result = new Result();
+        JSONObject json = JSON.parseObject(request.toJSONString());
+        String bikeId = json.getString("bikeId");
+        Bike bike = bikeService.getBikeInfoByBikeID(bikeId);
+        List<Site> siteList = siteService.queryAllSiteInfo();
+        for(int i=0;i<siteList.size();i++){
+            if(siteList.get(i).getId().equals(bike.getSiteId())){
+                bike.setSiteName(siteList.get(i).getSiteName());
+                break;
+            }
+        }
+        result.setData(bike);
         return result;
     }
 

@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String accountStatusDesc;
     private String userSex;
     private String birthday;
+    private String headImg;
 
 
     public Long getUserId() {
@@ -106,5 +107,13 @@ public class User implements Serializable {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 }

@@ -50,4 +50,16 @@ public interface UserDao {
      * @return
      */
     int updateAccountStatus(User user);
+
+    /**
+     * 更新账户余额
+     * @param user
+     */
+    void updateUserBalance(User user);
+
+    /**
+     * 更新账户资料
+     * @param user
+     */
+    void updateUserInfo(User user);
 }

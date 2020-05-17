@@ -15,4 +15,10 @@ public interface ExpenseDetailDao {
      * @return
      */
     List<ExpenseDetail> getExpenseDeatailByUserId(Long userId);
+
+    /**
+     * 新增数据
+     * @param expenseDetail
+     */
+    void saveExpenseDetail(ExpenseDetail expenseDetail);
 }

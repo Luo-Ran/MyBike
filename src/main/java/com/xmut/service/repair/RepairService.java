@@ -8,15 +8,23 @@ public interface RepairService {
 
     /**
      * 批量保存维修数据
-     * @param list
+     * @param repair
      */
-    void saveRepairInfo(List<Repair> list);
+    void saveRepairInfo(Repair repair);
 
     /**
-     * 查询全部维修信息
+     * 模糊搜索维修信息
+     * @param repair
      * @return
      */
-    List<Repair> getAllRepairInfo();
+    List<Repair> getRepairInfoByRepairStatus(Repair repair);
+
+    /**
+     * 根据车辆ID查询维修单
+     * @param bikeId
+     * @return
+     */
+    List<Repair> getRepairInfoByBikeId(String bikeId);
 
     /**
      * 根据repairId删除数据
@@ -24,4 +32,10 @@ public interface RepairService {
      * @return
      */
     int deleteRepairInfoByRepairId(String repairId);
+
+    /**
+     * 维修完成-更新维修单
+     * @param repair
+     */
+    void updateRepairInfo(Repair repair);
 }

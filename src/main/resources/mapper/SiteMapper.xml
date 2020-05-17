@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmut.dao.SiteDao">
+    <resultMap id="site_info" type="com.xmut.pojo.Site">
+        <id column="id" property="id"/>
+        <result column="site_name" property="siteName"/>
+        <result column="site_longitude" property="siteLongitude"/>
+        <result column="site_latitude" property="siteLatitude"/>
+        <result column="site_province" property="siteProvince"/>
+        <result column="site_city" property="siteCity"/>
+        <result column="site_district" property="siteDistrict"/>
+        <result column="site_street" property="siteStreet"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="queryAllSiteInfo" resultMap="site_info">
+        select * from site;
+    </select>
+
+    <!--根据siteId查询站点信息-->
+    <select id="querySiteBySiteId" parameterType="java.lang.Long" resultMap="site_info">
+        select * from site where id = #{value};
+    </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.xmut.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xmut.common.BikeSystemUtil;
 import com.xmut.common.Constans;
 import com.xmut.common.Result;
 import com.xmut.pojo.Order;
@@ -95,6 +96,10 @@ public class LoginController {
         user.setAccountStatus(Constans.ACCOUNT_STATUS.USING);
         user.setUserSex(Constans.USER_SEX.MEN);
         user.setBirthday("2000-01-01");
+        // 默认头像
+        String c = System.getProperty("user.dir");// 获取项目项目相对路径
+        String headImg = BikeSystemUtil.getImageBase64(c+"\\src\\main\\resources\\image\\headImg.jpg");
+        user.setHeadImg(headImg);
         userService.insertUser(user);
         return result;
     }
@@ -161,33 +166,28 @@ public class LoginController {
             // 使用结束
             if (Constans.ORDER_STATUS.Order_Status_1.equals(o.getStatus())) {
                 // 计算骑行时间   骑行距离
-                seconds += (o.getEndTime().getTime() - o.getStartTime().getTime()) / 1000;
+                seconds += Long.parseLong(o.getTripTime());
                 tripDistance += Double.valueOf(o.getTripDist());
             }
         }
-        Long second =  seconds % 60;
-        Long minutes = (seconds - second) / 60;
-        Long mintue = minutes % 60;
-        Long hour = (minutes - mintue) / 60;
-        StringBuffer tripTimeDesc = new StringBuffer();
-        if(0 != hour){
-            tripTimeDesc.append(hour);
-            tripTimeDesc.append("小时");
-        }
-        if(0 != mintue){
-            tripTimeDesc.append(mintue);
-            tripTimeDesc.append("分钟");
-        }
-        if(0 != second){
-            tripTimeDesc.append(second);
-            tripTimeDesc.append("秒");
-        }
+
         AccountInfoResponse accountInfoResponse = new AccountInfoResponse();
         BeanUtils.copyProperties(user,accountInfoResponse);
         accountInfoResponse.setTripDistance(tripDistance.toString());
-        accountInfoResponse.setTripTime(tripTimeDesc.toString());
+        accountInfoResponse.setTripTime(BikeSystemUtil.getTripDistance(seconds));
         result.setData(accountInfoResponse);
         return result;
+    }
+
+    @RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateUserInfo(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String userObject = jsonObject.getString("user");
+        User user = JSONObject.parseObject(userObject,User.class);
+        userService.updateUserInfo(user);
+        return  result;
     }
 
 }

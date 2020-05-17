@@ -1,7 +1,9 @@
 package com.xmut.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xmut.common.Constans;
 import com.xmut.common.Result;
 import com.xmut.pojo.Bike;
@@ -12,14 +14,18 @@ import com.xmut.service.bike.BikeService;
 import com.xmut.service.repair.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/repair")
@@ -36,34 +42,43 @@ public class RepairController {
      */
     @RequestMapping(value = "/saveRepairInfo", method = RequestMethod.POST)
     @ResponseBody
-    public Result saveRepairInfo(HttpServletRequest request){
+    public Result saveRepairInfo(@RequestBody JSONObject request) throws ParseException {
         Result result = new Result();
-        String bikes = request.getParameter("bikes");
-        String repairStatus = request.getParameter("repairStatus");
-        String user  = request.getParameter("user");
-        String repairContent = request.getParameter("repairContent");
-        List<Bike> bikeList = JSONArray.parseArray(bikes,Bike.class);
-        User u = JSON.parseObject(user,User.class);
-        List<Repair> repairList = new ArrayList<>();
-        for(Bike bike:bikeList){
-            Repair repair = new Repair();
-            repair.setRepairId("REP" + System.currentTimeMillis());
-            repair.setBikeId(bike.getBikeId());
-            repair.setUserId(u.getUserId());
-            repair.setRepairContent(repairContent);
-            repair.setRepairTime(new Date(System.currentTimeMillis()));
-            repair.setRepairResult(repairStatus);
-            repairList.add(repair);
-
-            // 修改自行车状态
-            if(Constans.REPAIR_RESULT.REPAIR_RESULT_0.equals(repairStatus)){
-                bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_1);
-            }else if(Constans.REPAIR_RESULT.REPAIR_RESULT_1.equals(repairStatus)){
-                bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_5);
-            }
-            bikeService.updateBikeStatus(bike);
+        JSONObject json = JSON.parseObject(request.toJSONString());
+        String bikeId = json.getString("bikeId");
+        String repairType = json.getString("repairType");
+        String problemDesc  = json.getString("problemDesc");
+        String userId = json.getString("userId");
+        // 修改自行车状态
+        Bike bike = bikeService.getBikeInfoByBikeID(bikeId);
+        bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_3);
+        bikeService.updateBikeStatus(bike);
+        // 保存维修信息
+        Repair repair = new Repair();
+        // 根据时间生成ID
+        String time= Integer.toHexString((int)new Date().getTime());
+        repair.setRepairId("REP"+ time.toUpperCase());
+        repair.setBikeId(bikeId);
+        repair.setUserId(Long.parseLong(userId));
+        // 维修内容
+        StringBuilder repairContent = new StringBuilder();
+        switch (repairType){
+            case "1": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_1_DESC);break;
+            case "2": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_2_DESC);break;
+            case "3": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_3_DESC);break;
+            case "4": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_4_DESC);break;
+            case "5": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_5_DESC);break;
+            case "6": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_6_DESC);break;
+            case "7": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_7_DESC);break;
         }
-        repairService.saveRepairInfo(repairList);
+        if (problemDesc != null && problemDesc.length() != 0){
+            repairContent.append("-");
+            repairContent.append(problemDesc);
+        }
+        repair.setRepairContent(repairContent.toString());
+        repair.setRepairTime(new Date());
+        repair.setRepairStatus(Constans.REPAIR_STUATUS.REPAIR_STUATUS_0);
+        repairService.saveRepairInfo(repair);
         return result;
     }
 
@@ -74,10 +89,21 @@ public class RepairController {
      */
     @RequestMapping(value = "/getRepairInfo", method = RequestMethod.POST)
     @ResponseBody
-    public Result getRepairInfo(HttpServletRequest request){
+    public Result getRepairInfo(@RequestBody JSONObject request){
         Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String repairStatus = jsonObject.getString("repairStatus");
+        String repairValue = jsonObject.getString("repairValue");
         List<RepairResponse> repairResponseListList = new ArrayList<>();
-        List<Repair> repairList = repairService.getAllRepairInfo();
+        // 查询维修信息
+        Repair r = new Repair();
+        r.setRepairStatus(repairStatus);
+        if(StringUtils.isEmpty(repairValue)){
+            repairValue = "B";
+        }
+        r.setBikeId(repairValue);
+        List<Repair> repairList = repairService.getRepairInfoByRepairStatus(r);
+        // 维修信息处理
         for(Repair repair:repairList){
             RepairResponse rep = new RepairResponse();
             copyToResponse(repair,rep);
