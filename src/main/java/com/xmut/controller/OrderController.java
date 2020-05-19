@@ -42,9 +42,10 @@ public class OrderController {
     private static Double perPrice = 1.5;
     @RequestMapping(value = "/getOrderByUserID", method = RequestMethod.POST)
     @ResponseBody
-    public Result getOrderByUserID(HttpServletRequest request){
+    public Result getOrderByUserID(@RequestBody JSONObject request){
         Result result = new Result();
-        String user  = request.getParameter("user");
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String user  = jsonObject.getString("user");
         User u =  new User();
         u = JSON.parseObject(user,User.class);
         List<Order> orderList = orderService.getOrderByUserID(u.getUserId());

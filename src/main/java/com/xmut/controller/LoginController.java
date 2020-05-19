@@ -38,6 +38,7 @@ public class LoginController {
 
     public User user = null;
     private String balance = "0.00";
+    private Double oneKm = 1000.0;
 
     /**
      *  登录验证
@@ -167,7 +168,15 @@ public class LoginController {
             if (Constans.ORDER_STATUS.Order_Status_1.equals(o.getStatus())) {
                 // 计算骑行时间   骑行距离
                 seconds += Long.parseLong(o.getTripTime());
-                tripDistance += Double.valueOf(o.getTripDist());
+                String distance = o.getTripDist();
+                if("米".equals(distance.substring(distance.length()-1))){
+                    distance = distance.substring(0,distance.length()-1);
+                    tripDistance += Double.valueOf(distance) / oneKm;
+                }else {
+                    distance = distance.substring(0,distance.length()-2);
+                    tripDistance += Double.valueOf(distance);
+                }
+
             }
         }
 
