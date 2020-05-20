@@ -21,4 +21,14 @@ public class SiteServiceImpl implements SiteService {
     public Site querySiteBySiteId(Long siteId) {
         return siteDao.querySiteBySiteId(siteId);
     }
+
+    @Override
+    public int saveSiteInfo(Site site) {
+        return siteDao.saveSiteInfo(site);
+    }
+
+    @Override
+    public int deleteSiteInfo(Site site) {
+        return siteDao.deleteSiteInfo(site);
+    }
 }

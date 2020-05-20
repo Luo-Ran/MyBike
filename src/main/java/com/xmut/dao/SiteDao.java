@@ -21,4 +21,18 @@ public interface SiteDao {
      * @return
      */
     Site querySiteBySiteId(Long siteId);
+
+    /**
+     * 新增站点
+     * @param site
+     * @return
+     */
+    int saveSiteInfo(Site site);
+
+    /**
+     * 删除站点
+     * @param site
+     * @return
+     */
+    int deleteSiteInfo(Site site);
 }
