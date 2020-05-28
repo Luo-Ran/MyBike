@@ -40,8 +40,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateAccountStatus(User user) {
-        return userDao.updateAccountStatus(user);
+    public List<User> queryUserByUserNo(User user) {
+        return userDao.queryUserByUserNo(user);
+    }
+
+    @Override
+    public int updateUserAccount(User user) {
+        return userDao.updateUserAccount(user);
     }
 
     @Override
@@ -52,5 +57,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserInfo(User user) {
         userDao.updateUserInfo(user);
+    }
+
+    @Override
+    public int updateUserPass(User user) {
+        return userDao.updateUserPass(user);
+    }
+
+    @Override
+    public int deleteUserByUserID(User user) {
+        return userDao.deleteUserByUserID(user);
     }
 }

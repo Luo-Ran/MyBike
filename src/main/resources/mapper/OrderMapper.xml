@@ -7,6 +7,7 @@
         <result column="ORDER_ID" property="orderId"/>
         <result column="USER_ID" property="userId"/>
         <result column="BIKE_ID" property="bikeId"/>
+        <result column="SITE_ID" property="siteId"/>
         <result column="STATUS" property="status"/>
         <result column="START_TIME" property="startTime"/>
         <result column="END_TIME" property="endTime"/>
@@ -26,6 +27,18 @@
     <select id="queryOrderByOrderId" parameterType="java.lang.String" resultMap="order_info">
         select * from bike_order where ORDER_ID = #{value}
     </select>
+
+    <select id="countBikeOrderByTime" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM bike_order where START_TIME like concat('%',#{0},'%')
+        and SITE_ID = #{1}
+        and STATUS = '1'
+    </select>
+
+    <select id="orderProfitByTime" resultMap="order_info">
+        SELECT * FROM bike_order where START_TIME like concat('%',#{0},'%')
+        and SITE_ID = #{1}
+        and STATUS = '1'
+    </select>
     
     <delete id="deleteOrderInfoByOrderId" parameterType="java.lang.String">
         delete from bike_order where ORDER_ID = #{orderId}
@@ -33,9 +46,9 @@
 
     <insert id="saveBikeOrderInfo" parameterType="com.xmut.pojo.Order" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into
-			bike_order(ORDER_ID,USER_ID,BIKE_ID,STATUS,START_TIME,LONGITUDE_START,LATITUDE_START)
+			bike_order(ORDER_ID,USER_ID,BIKE_ID,SITE_ID,STATUS,START_TIME,LONGITUDE_START,LATITUDE_START)
 		values
-			(#{orderId},#{userId},#{bikeId},#{status},#{startTime},#{longitudeStart},#{latitudeStart})
+			(#{orderId},#{userId},#{bikeId},#{siteId},#{status},#{startTime},#{longitudeStart},#{latitudeStart})
     </insert>
 
     <update id="updateBikeOrderInfo" parameterType="com.xmut.pojo.Order">

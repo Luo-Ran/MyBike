@@ -5,6 +5,9 @@ import com.xmut.controller.BikeController;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -54,7 +57,6 @@ public class BikeControllerTest {
                 System.out.println(distance[i]);
             }
         }
-
     }
 
 }

@@ -22,6 +22,10 @@ public class Order implements Serializable {
      */
     private String bikeId;
     /**
+     * 站点ID
+     */
+    private Long siteId;
+    /**
      * 订单状态
      */
     private String status;
@@ -175,5 +179,13 @@ public class Order implements Serializable {
 
     public void setTripTime(String tripTime) {
         this.tripTime = tripTime;
+    }
+
+    public Long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 }

@@ -22,6 +22,10 @@ public class Repair implements Serializable {
      */
     private Long userId;
     /**
+     * 站点ID
+     */
+    private Long siteId;
+    /**
      * 维修内容
      */
     private String repairContent;
@@ -102,5 +106,13 @@ public class Repair implements Serializable {
 
     public void setRepairStatus(String repairStatus) {
         this.repairStatus = repairStatus;
+    }
+
+    public Long getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Long siteId) {
+        this.siteId = siteId;
     }
 }

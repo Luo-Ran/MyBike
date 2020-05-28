@@ -36,4 +36,15 @@ public class OrderServiceImpl implements OrderService{
     public void updateBikeOrderInfo(Order order) {
         orderDao.updateBikeOrderInfo(order);
     }
+
+    @Override
+    public int countBikeOrderByTime(String time, Long siteId) {
+        return orderDao.countBikeOrderByTime(time,siteId);
+    }
+
+    @Override
+    public List<Order> orderProfitByTime(String time, Long siteId) {
+        return orderDao.orderProfitByTime(time, siteId);
+    }
+
 }

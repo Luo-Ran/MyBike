@@ -42,4 +42,12 @@ public interface RepairDao {
      * @param repair
      */
     void updateRepairInfo(Repair repair);
+
+    /**
+     * 根据维修时间查询维修单
+     * @param repairTime
+     * @param siteId
+     * @return
+     */
+    int countRepairByTime(String repairTime, Long siteId);
 }

@@ -2,6 +2,7 @@ package com.xmut.dao;
 
 import com.xmut.pojo.Order;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,4 +39,20 @@ public interface OrderDao {
      * @param order
      */
     void updateBikeOrderInfo(Order order);
+
+    /**
+     * 统计某一站点在某一日期的订单数量
+     * @param time
+     * @param siteId
+     * @return
+     */
+    int countBikeOrderByTime(String time, Long siteId);
+
+    /**
+     * 查询某一站点在某一日期的订单
+     * @param time
+     * @param siteId
+     * @return
+     */
+    List<Order> orderProfitByTime(String time, Long siteId);
 }

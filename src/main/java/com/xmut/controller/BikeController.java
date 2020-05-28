@@ -218,7 +218,7 @@ public class BikeController {
                 bike.setImageUrl(imgFileBase);// 使用上传的图片
             }else{// 设置默认图片
                 String c = System.getProperty("user.dir");// 获取项目项目相对路径
-                String img ="data:image/jpeg;base64,/";
+                String img ="data:image/jpeg;base64,";
                 img = img + BikeSystemUtil.getImageBase64(c+"\\src\\main\\resources\\image\\defaultImg.jpg");
                 bike.setImageUrl(img);
             }

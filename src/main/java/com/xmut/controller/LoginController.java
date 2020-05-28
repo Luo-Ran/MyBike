@@ -1,10 +1,12 @@
 package com.xmut.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xmut.common.BikeSystemUtil;
 import com.xmut.common.Constans;
 import com.xmut.common.Result;
+import com.xmut.common.ResultType;
 import com.xmut.pojo.Order;
 import com.xmut.pojo.Params.AccountInfoResponse;
 import com.xmut.pojo.Params.OrderResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -99,20 +102,46 @@ public class LoginController {
         user.setBirthday("2000-01-01");
         // 默认头像
         String c = System.getProperty("user.dir");// 获取项目项目相对路径
-        String headImg = BikeSystemUtil.getImageBase64(c+"\\src\\main\\resources\\image\\headImg.jpg");
+        String headImg ="data:image/jpeg;base64,";
+        headImg = headImg + BikeSystemUtil.getImageBase64(c+"\\src\\main\\resources\\image\\headImg.jpg");
         user.setHeadImg(headImg);
         userService.insertUser(user);
         return result;
     }
 
     /**
-     * 查询全部账号
+     * 查询账号
      * @param request
      * @return
      */
+    @RequestMapping(value = "/queryUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Result queryUser(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String authority = jsonObject.getString("authority");
+        String userNoValue = jsonObject.getString("userNoValue");
+        User searchUser = new User();
+        searchUser.setAccountAuthority(authority);
+        if(!StringUtils.isEmpty(userNoValue)){
+            searchUser.setUserNo(userNoValue);
+        }
+        List<User> userList = userService.queryUserByUserNo(searchUser);
+        for(int i = 0;i<userList.size();i++){
+            User user = userList.get(i);
+            if(Constans.ACCOUNT_STATUS.USING.equals(user.getAccountStatus())){
+                userList.get(i).setAccountStatusDesc(Constans.ACCOUNT_STATUS.USING_DESC);
+            }else if(Constans.ACCOUNT_STATUS.PROHIBIT.equals(user.getAccountStatus())){
+                userList.get(i).setAccountStatusDesc(Constans.ACCOUNT_STATUS.PROHIBIT_DESC);
+            }
+        }
+        result.setData(userList);
+        return result;
+    }
+
     @RequestMapping(value = "/queryAllUser", method = RequestMethod.POST)
     @ResponseBody
-    public Result queryAllUser(HttpServletRequest request){
+    public Result queryAllUser(){
         Result result = new Result();
         List<User> userList = userService.queryAllUser();
         for(int i = 0;i<userList.size();i++){
@@ -134,16 +163,62 @@ public class LoginController {
      */
     @RequestMapping(value = "/changeAccountStatus", method = RequestMethod.POST)
     @ResponseBody
-    public Result changeAccountStatus(HttpServletRequest request){
+    public Result changeAccountStatus(@RequestBody JSONObject request){
         Result result = new Result();
-        Long userId = Long.valueOf(request.getParameter("userId"));
-        String targetStatus = request.getParameter("targetStatus");
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        Long userId = Long.valueOf(jsonObject.getString("userId"));
+        String targetStatus = jsonObject.getString("targetStatus");
         User user = new User();
         user.setUserId(userId);
         user.setAccountStatus(targetStatus);
-        int num = userService.updateAccountStatus(user);
+        int num = userService.updateUserAccount(user);
         if(num != 1){
             result.setSuccess(false);
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/changeAccountAuthority", method = RequestMethod.POST)
+    @ResponseBody
+    public Result changeAccountAuthority(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String userId = jsonObject.getString("userId");
+        String targetAuthority = jsonObject.getString("targetAuthority");
+        User user = new User();
+        user.setUserId(Long.parseLong(userId));
+        user.setAccountAuthority(targetAuthority);
+        int num = userService.updateUserAccount(user);
+        if(1 != num){
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
+    /**
+     * 修改密码
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
+    @ResponseBody
+    public Result changePassword(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String newPassword = jsonObject.getString("newPassword");
+        String oldPassword = jsonObject.getString("oldPassword");
+        Long userId = jsonObject.getLong("userId");
+        User user = userService.getUserByID(userId);
+        if(oldPassword.equals(user.getUserPass())) {
+            user.setUserPass(newPassword);
+            int num = userService.updateUserPass(user);
+            if (1 != num) {
+                result.setSuccess(false);
+                result.setMessage(ResultType.FAIL.getName());
+            }
+        }else {
+            result.setSuccess(false);
+            result.setMessage("旧密码错误");
         }
         return result;
     }
@@ -197,6 +272,21 @@ public class LoginController {
         User user = JSONObject.parseObject(userObject,User.class);
         userService.updateUserInfo(user);
         return  result;
+    }
+
+    @RequestMapping(value = "/deleteUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Result deleteUserInfo(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String userId = jsonObject.getString("userId");
+        User user = new User();
+        user.setUserId(Long.parseLong(userId));
+        int num = userService.deleteUserByUserID(user);
+        if(1 != num){
+            result.setSuccess(false);
+        }
+        return result;
     }
 
 }

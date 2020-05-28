@@ -44,41 +44,52 @@ public class RepairController {
     @ResponseBody
     public Result saveRepairInfo(@RequestBody JSONObject request) throws ParseException {
         Result result = new Result();
+        result.setSuccess(true);
+        result.setMessage("报修成功");
         JSONObject json = JSON.parseObject(request.toJSONString());
         String bikeId = json.getString("bikeId");
         String repairType = json.getString("repairType");
         String problemDesc  = json.getString("problemDesc");
         String userId = json.getString("userId");
-        // 修改自行车状态
+        // 查询车辆
         Bike bike = bikeService.getBikeInfoByBikeID(bikeId);
-        bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_3);
-        bikeService.updateBikeStatus(bike);
-        // 保存维修信息
-        Repair repair = new Repair();
-        // 根据时间生成ID
-        String time= Integer.toHexString((int)new Date().getTime());
-        repair.setRepairId("REP"+ time.toUpperCase());
-        repair.setBikeId(bikeId);
-        repair.setUserId(Long.parseLong(userId));
-        // 维修内容
-        StringBuilder repairContent = new StringBuilder();
-        switch (repairType){
-            case "1": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_1_DESC);break;
-            case "2": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_2_DESC);break;
-            case "3": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_3_DESC);break;
-            case "4": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_4_DESC);break;
-            case "5": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_5_DESC);break;
-            case "6": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_6_DESC);break;
-            case "7": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_7_DESC);break;
+        if(Constans.BIKE_STATUS.Bike_Status_2.equals(bike.getBikeStatus())){
+            result.setSuccess(false);
+            result.setMessage("车辆已被租用，无法报修");
+        }else if(Constans.BIKE_STATUS.Bike_Status_3.equals(bike.getBikeStatus())){
+            // 车辆已报修，无需操作，直接返回
+        }else{
+            // 修改自行车状态
+            bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_3);
+            bikeService.updateBikeStatus(bike);
+            // 保存维修信息
+            Repair repair = new Repair();
+            // 根据时间生成ID
+            String time= Integer.toHexString((int)new Date().getTime());
+            repair.setRepairId("REP"+ time.toUpperCase());
+            repair.setBikeId(bikeId);
+            repair.setSiteId(bike.getSiteId());
+            repair.setUserId(Long.parseLong(userId));
+            // 维修内容
+            StringBuilder repairContent = new StringBuilder();
+            switch (repairType){
+                case "1": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_1_DESC);break;
+                case "2": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_2_DESC);break;
+                case "3": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_3_DESC);break;
+                case "4": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_4_DESC);break;
+                case "5": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_5_DESC);break;
+                case "6": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_6_DESC);break;
+                case "7": repairContent.append(Constans.REPAIR_PROBLEM.REPAIR_PROBLEM_7_DESC);break;
+            }
+            if (problemDesc != null && problemDesc.length() != 0){
+                repairContent.append("-");
+                repairContent.append(problemDesc);
+            }
+            repair.setRepairContent(repairContent.toString());
+            repair.setRepairTime(new Date());
+            repair.setRepairStatus(Constans.REPAIR_STUATUS.REPAIR_STUATUS_0);
+            repairService.saveRepairInfo(repair);
         }
-        if (problemDesc != null && problemDesc.length() != 0){
-            repairContent.append("-");
-            repairContent.append(problemDesc);
-        }
-        repair.setRepairContent(repairContent.toString());
-        repair.setRepairTime(new Date());
-        repair.setRepairStatus(Constans.REPAIR_STUATUS.REPAIR_STUATUS_0);
-        repairService.saveRepairInfo(repair);
         return result;
     }
 
@@ -129,6 +140,9 @@ public class RepairController {
         Result result = new Result();
         String repairId = request.getParameter("repairId");
         int num = repairService.deleteRepairInfoByRepairId(repairId);
+        if(1 != num){
+            result.setSuccess(false);
+        }
         return result;
     }
 

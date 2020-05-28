@@ -7,6 +7,7 @@
         <result column="REPAIR_ID" property="repairId"/>
         <result column="USER_ID" property="userId"/>
         <result column="BIKE_ID" property="bikeId"/>
+        <result column="SITE_ID" property="siteId"/>
         <result column="REPAIR_CONTENT" property="repairContent"/>
         <result column="REPAIR_TIME" property="repairTime"/>
         <result column="REPAIR_RESULT" property="repairResult"/>
@@ -14,9 +15,9 @@
     </resultMap>
 
     <insert id="saveRepairInfo" parameterType="com.xmut.pojo.Repair" useGeneratedKeys="true" keyProperty="id">
-        insert into repair(REPAIR_ID, BIKE_ID, USER_ID, REPAIR_CONTENT, REPAIR_TIME, REPAIR_STATUS)
+        insert into repair(REPAIR_ID, BIKE_ID, SITE_ID, USER_ID, REPAIR_CONTENT, REPAIR_TIME, REPAIR_STATUS)
         values(
-          #{repairId}, #{bikeId}, #{userId}, #{repairContent}, #{repairTime}, #{repairStatus}
+          #{repairId}, #{bikeId}, #{siteId}, #{userId}, #{repairContent}, #{repairTime}, #{repairStatus}
           )
     </insert>
 
@@ -26,6 +27,12 @@
 
     <select id="getRepairInfoByBikeId" parameterType="java.lang.String" resultMap="repair_info">
         select * from repair where BIKE_ID= #{bikeId}
+    </select>
+
+    <select id="countRepairByTime" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM repair where REPAIR_TIME like concat('%',#{0},'%')
+        and SITE_ID = #{1}
+        and REPAIR_STATUS = '1'
     </select>
     
     <delete id="deleteRepairInfoByRepairId" parameterType="java.lang.String">

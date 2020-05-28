@@ -100,12 +100,11 @@ public class OrderController {
         Bike bike = bikeService.getBikeInfoByBikeID(bikeId);
         bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_2);
         bikeService.updateBikeStatus(bike);
-        // 查询站点信息
-        Site site = siteService.querySiteBySiteId(bike.getSiteId());
         // 新增订单
         Order newOrder = new Order();
         newOrder.setBikeId(bikeId);
         newOrder.setUserId(Integer.parseInt(userId));
+        newOrder.setSiteId(bike.getSiteId());
         // 获取UUID的最后12位
         newOrder.setOrderId(UUID.randomUUID().toString().substring(24));
         newOrder.setStartTime(new Date());
@@ -206,6 +205,9 @@ public class OrderController {
         rentalNum++;
         bike.setRentalNum(rentalNum);
         bikeService.updateRentalNum(bike);
+        // 更新车辆状态
+        bike.setBikeStatus(Constans.BIKE_STATUS.Bike_Status_1);
+        bikeService.updateBikeStatus(bike);
         return result;
     }
 
@@ -224,6 +226,7 @@ public class OrderController {
         orderResponse.setLongitudeEnd(order.getLongitudeEnd());
         orderResponse.setLatitudeEnd(order.getLatitudeEnd());
         orderResponse.setBikeId(order.getBikeId());
+        orderResponse.setSiteId(order.getSiteId());
     }
 
 }

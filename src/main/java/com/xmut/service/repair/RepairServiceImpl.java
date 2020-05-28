@@ -36,4 +36,9 @@ public class RepairServiceImpl implements RepairService{
     public void updateRepairInfo(Repair repair) {
         repairDao.updateRepairInfo(repair);
     }
+
+    @Override
+    public int countRepairByTime(String repairTime, Long siteId) {
+        return repairDao.countRepairByTime(repairTime, siteId);
+    }
 }

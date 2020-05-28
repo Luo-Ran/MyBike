@@ -31,6 +31,12 @@
 	<select id="queryAllUser" resultMap="user_info">
 		select * from user
 	</select>
+	<select id="queryUserByUserNo" parameterType="com.xmut.pojo.User" resultMap="user_info">
+		select * from user where account_authority = #{accountAuthority}
+		<if test = "userNo != null">
+            and user_no like concat('%',#{userNo},'%')
+        </if>
+	</select>
 
     <insert id="insertUser" parameterType="com.xmut.pojo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into
@@ -41,9 +47,18 @@
 			#{userSign},#{accountStatus},#{userSex},#{birthday},#{headImg})
 	</insert>
 
-	<!--更新账号状态-->
-	<update id="updateAccountStatus" parameterType="com.xmut.pojo.User">
-        update user set account_status = #{accountStatus} WHERE user_id = #{userId}
+	<!--更新账号状态、账户权限-->
+	<update id="updateUserAccount" parameterType="com.xmut.pojo.User">
+		update user set
+		<choose>
+			<when test="accountStatus != null">
+				account_status = #{accountStatus}
+			</when>
+			<otherwise>
+				account_authority = #{accountAuthority}
+			</otherwise>
+		</choose>
+         WHERE user_id = #{userId}
     </update>
 	<!--更新账户资料-->
 	<update id="updateUserInfo" parameterType="com.xmut.pojo.User">
@@ -55,5 +70,14 @@
 	<update id="updateUserBalance" parameterType="com.xmut.pojo.User">
         update user set user_balance = #{userBalance} WHERE user_id = #{userId}
     </update>
+
+	<!--更新账户密码-->
+	<update id="updateUserPass" parameterType="com.xmut.pojo.User">
+        update user set user_pass = #{userPass} WHERE user_id = #{userId}
+    </update>
+    
+    <delete id="deleteUserByUserID" parameterType="com.xmut.pojo.User">
+        DELETE  FROM user where user_id = #{userId}
+    </delete>
 
 </mapper>

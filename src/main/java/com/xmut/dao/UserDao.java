@@ -45,11 +45,19 @@ public interface UserDao {
     List<User> queryAllUser();
 
     /**
+     * 根据账号模糊搜索
+     * @param user
+     * @return
+     */
+    List<User> queryUserByUserNo(User user);
+
+
+    /**
      * 账号禁用
      * @param user
      * @return
      */
-    int updateAccountStatus(User user);
+    int updateUserAccount(User user);
 
     /**
      * 更新账户余额
@@ -62,4 +70,18 @@ public interface UserDao {
      * @param user
      */
     void updateUserInfo(User user);
+
+    /**
+     * 修改密码
+     * @param user
+     * @return
+     */
+    int updateUserPass(User user);
+
+    /**
+     * 删除账号
+     * @param user
+     * @return
+     */
+    int deleteUserByUserID(User user);
 }
