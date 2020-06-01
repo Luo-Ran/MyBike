@@ -23,6 +23,16 @@
         select * from site where id = #{value};
     </select>
 
+    <!--根据siteName查询站点信息-->
+    <select id="querySiteByName" parameterType="java.lang.String" resultMap="site_info">
+        select * from site where site_name like concat('%',#{value},'%')
+    </select>
+
+    <!--根据经纬度查询站点信息-->
+    <select id="querySiteByLocation" parameterType="com.xmut.pojo.Site" resultMap="site_info">
+        SELECT * FROM site where site_longitude = #{siteLongitude} and site_latitude = #{siteLatitude}
+    </select>
+
     <insert id="saveSiteInfo" parameterType="com.xmut.pojo.Site" useGeneratedKeys="true" keyProperty="id">
         insert into site(site_name,site_longitude,site_latitude,site_province,
         site_city,site_district,site_street,create_time)

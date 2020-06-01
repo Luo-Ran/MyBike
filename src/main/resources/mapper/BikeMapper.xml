@@ -27,6 +27,11 @@
         select * from bike where bike_id=#{0}
     </select>
 
+    <!--根据site_id查询自信车-->
+    <select id="getBikeInfoBySiteID" parameterType="java.lang.Long" resultMap="bike_info">
+        select * from bike where site_id=#{0}
+    </select>
+
 
     <!--更新update-->
     <!--根据bikeID更新自行车状态-->

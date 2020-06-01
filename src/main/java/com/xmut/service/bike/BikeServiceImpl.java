@@ -31,6 +31,11 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
+    public List<Bike> getBikeInfoBySiteID(Long siteId) {
+        return bikeDao.getBikeInfoBySiteID(siteId);
+    }
+
+    @Override
     public void updateBikeStatus(Bike bike) {
         bikeDao.updateBikeStatus(bike);
     }

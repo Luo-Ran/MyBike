@@ -30,4 +30,18 @@ public interface SiteService {
      * @return
      */
     int deleteSiteInfo(Site site);
+
+    /**
+     * 根据siteName查询站点信息
+     * @param siteName
+     * @return
+     */
+    List<Site> querySiteByName(String siteName);
+
+    /**
+     * 根据经纬度查询站点信息
+     * @param site
+     * @return
+     */
+    Site querySiteByLocation(Site site);
 }

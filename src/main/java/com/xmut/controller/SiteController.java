@@ -4,7 +4,9 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xmut.common.Result;
+import com.xmut.pojo.Bike;
 import com.xmut.pojo.Site;
+import com.xmut.service.bike.BikeService;
 import com.xmut.service.site.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +25,9 @@ import java.util.List;
 public class SiteController {
     @Autowired
     private SiteService siteService;
+
+    @Autowired
+    private BikeService bikeService;
 
     /**
      * 查询站点信息
@@ -95,10 +101,48 @@ public class SiteController {
         if(!StringUtils.isEmpty(latitude)){
             site.setSiteLatitude(latitude);
         }
+        // 查询站点信息，获取该站点的车辆
+        Site siteInfo = siteService.querySiteByLocation(site);
+        List<Bike> bikeList = bikeService.getBikeInfoBySiteID(siteInfo.getId());
+        if(bikeList.size()>0){
+            // 获得bikeId
+            String[] ids = new String[bikeList.size()];
+            for(int i = 0;i < bikeList.size();i++){
+                Bike b = bikeList.get(i);
+                ids[i] = b.getBikeId();
+            }
+            // 删除车辆
+            int bikeNum = bikeService.batchDeleteBike(ids);
+            if(bikeNum != bikeList.size()){
+                result.setSuccess(false);
+            }
+        }
+        // 删除站点
         int num = siteService.deleteSiteInfo(site);
         if(num != 1){
             result.setSuccess(false);
         }
+        return result;
+    }
+
+    /**
+     * 根据siteName查询站点信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/querySiteByName",method = RequestMethod.POST)
+    @ResponseBody
+    public Result querySiteByName(@RequestBody JSONObject request){
+        Result result = new Result();
+        JSONObject jsonObject = JSON.parseObject(request.toJSONString());
+        String siteName = jsonObject.getString("siteName");
+        List<Site> siteList = new ArrayList<>();
+        if(StringUtils.isEmpty(siteName)){
+            siteList = siteService.queryAllSiteInfo();
+        }else {
+            siteList = siteService.querySiteByName(siteName);
+        }
+        result.setData(siteList);
         return result;
     }
 

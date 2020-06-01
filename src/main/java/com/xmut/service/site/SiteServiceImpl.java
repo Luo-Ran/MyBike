@@ -31,4 +31,14 @@ public class SiteServiceImpl implements SiteService {
     public int deleteSiteInfo(Site site) {
         return siteDao.deleteSiteInfo(site);
     }
+
+    @Override
+    public List<Site> querySiteByName(String siteName) {
+        return siteDao.querySiteByName(siteName);
+    }
+
+    @Override
+    public Site querySiteByLocation(Site site) {
+        return siteDao.querySiteByLocation(site);
+    }
 }
